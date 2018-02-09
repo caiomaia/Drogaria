@@ -29,4 +29,18 @@ public class FabricanteDAOTest {
 			System.out.println("Codigo: " + fabricante.getCodigo() + " - Descrição: " + fabricante.getDescricao());
 		}
 	}
+	
+	@Test
+	@Ignore
+	public void merge(){
+		//Fabricante fabricante = new Fabricante();
+		//fabricante.setDescricao("Cremer S.A.");
+		
+		//FabricanteDAO fabricanteDAO = new FabricanteDAO();
+		//fabricanteDAO.merge(fabricante);
+		FabricanteDAO fabricanteDAO = new FabricanteDAO();
+		Fabricante fabricante = fabricanteDAO.buscar(36L);
+		fabricante.setDescricao("Cremer");
+		fabricanteDAO.merge(fabricante);
+	}
 }
