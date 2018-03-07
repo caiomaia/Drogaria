@@ -13,16 +13,17 @@
 	<h:form>
 		<p:panel header="Estados - Listagem">
 			<p:dataTable emptyMessage="Nenhum registro encontrado."
-				paginator="true">
+				paginator="true" value="#{estadoBean.estados}" var="estado">
 				<f:facet name="header">
 					<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
-					actionListener="#{estadoBean.novo}"
-					update=":formCadastro:painel" />
+						actionListener="#{estadoBean.novo}" update=":formCadastro:painel" />
 				</f:facet>
 				<p:column headerText="Nome">
+					<h:outputText value="#{estado.nome}" />
 				</p:column>
 
 				<p:column headerText="Sigla">
+					<h:outputText value="#{estado.sigla}" />
 				</p:column>
 
 				<p:column headerText="Opções">
@@ -35,14 +36,17 @@
 		<h:form id="formCadastro">
 			<h:panelGrid id="painel" columns="2">
 				<p:outputLabel value="Nome:" />
-				<p:inputText size="30" maxlength="50" value="#{estadoBean.estado.nome}"/>
-				
+				<p:inputText size="30" maxlength="50"
+					value="#{estadoBean.estado.nome}" />
+
 				<p:outputLabel value="Sigla:" />
-				<p:inputText size="10" maxlength="2" value="#{estadoBean.estado.sigla}" />
+				<p:inputText size="10" maxlength="2"
+					value="#{estadoBean.estado.sigla}" />
 			</h:panelGrid>
 			<h:panelGrid columns="2">
 				<p:commandButton value="Salvar"
-					actionListener="#{estadoBean.salvar}" update=":mensagem :formCadastro:painel" />
+					actionListener="#{estadoBean.salvar}"
+					update=":mensagem :formCadastro:painel" />
 				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
 			</h:panelGrid>
 		</h:form>
