@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
@@ -61,6 +62,10 @@ public class FabricanteBean implements Serializable{
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o fabricante");
 			erro.printStackTrace();
 		}
+	}
+	public void excluir(ActionEvent evento){
+		fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
+		Messages.addGlobalInfo("Excluido: Nome: " + fabricante.getDescricao());
 	}
 
 }
