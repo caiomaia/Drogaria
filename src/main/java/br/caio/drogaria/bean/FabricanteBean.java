@@ -58,6 +58,7 @@ public class FabricanteBean implements Serializable{
 			Messages.addGlobalInfo("Fabricante salvo com sucesso");
 			
 			novo();
+			listar();
 		} catch (RuntimeException erro){
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o fabricante");
 			erro.printStackTrace();
