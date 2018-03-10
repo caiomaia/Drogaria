@@ -27,9 +27,15 @@
 
 				<p:column headerText="Opções">
 					<p:commandButton icon="ui-icon-trash"
-						actionListener="#{fabricanteBean.excluir}" update=":mensagem">
+						actionListener="#{fabricanteBean.excluir}"
+						update=":mensagem :formListagem:tabela">
 						<p:confirm header="Confirmação"
 							message="Deseja excluir o fabricante" icon="ui-icon-alert" />
+						<f:attribute name="fabricanteSelecionado" value="#{fabricante}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{fabricanteBean.editar}"
+						update=":formCadastro:painel" oncomplete="PF('dialogo').show();">
 						<f:attribute name="fabricanteSelecionado" value="#{fabricante}" />
 					</p:commandButton>
 				</p:column>

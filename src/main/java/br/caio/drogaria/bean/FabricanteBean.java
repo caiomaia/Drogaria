@@ -16,7 +16,7 @@ import br.caio.drogaria.domain.Fabricante;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
-public class FabricanteBean implements Serializable{
+public class FabricanteBean implements Serializable {
 	private Fabricante fabricante;
 	private List<Fabricante> fabricantes;
 
@@ -27,46 +27,60 @@ public class FabricanteBean implements Serializable{
 	public void setFabricante(Fabricante fabricante) {
 		this.fabricante = fabricante;
 	}
-	
+
 	public List<Fabricante> getFabricantes() {
 		return fabricantes;
 	}
-	
+
 	public void setFabricantes(List<Fabricante> fabricantes) {
 		this.fabricantes = fabricantes;
 	}
-	
-	public void novo(){
+
+	public void novo() {
 		fabricante = new Fabricante();
 	}
-	
+
 	@PostConstruct
-	public void listar(){
+	public void listar() {
 		try {
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
 			fabricantes = fabricanteDAO.listar();
-		} catch (RuntimeException erro){
+		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar listar o fabricante");
 			erro.printStackTrace();
 		}
 	}
-	
-	public void salvar(){
+
+	public void salvar() {
 		try {
 			FabricanteDAO fabricanteDAO = new FabricanteDAO();
-			fabricanteDAO.salvar(fabricante);
+			fabricanteDAO.merge(fabricante);
 			Messages.addGlobalInfo("Fabricante salvo com sucesso");
-			
+
 			novo();
 			listar();
-		} catch (RuntimeException erro){
+		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar salvar o fabricante");
 			erro.printStackTrace();
 		}
 	}
-	public void excluir(ActionEvent evento){
+
+	public void excluir(ActionEvent evento) {
+		try {
+			fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
+			FabricanteDAO fabricanteDAO = new FabricanteDAO();
+			fabricanteDAO.excluir(fabricante);
+
+			listar();
+			Messages.addGlobalInfo("Fabricante removido com sucesso");
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar remover o fabricante");
+			erro.printStackTrace();
+		}
+	}
+	
+	public void editar(ActionEvent evento){
 		fabricante = (Fabricante) evento.getComponent().getAttributes().get("fabricanteSelecionado");
-		Messages.addGlobalInfo("Excluido: Nome: " + fabricante.getDescricao());
 	}
 
 }
