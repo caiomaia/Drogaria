@@ -35,7 +35,9 @@
 
 				<p:column headerText="Preço" sortBy="#{produto.preco}"
 					filterBy="#{produto.preco}">
-					<h:outputText value="#{produto.preco}" />
+					<h:outputText value="#{produto.preco}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2"/>
+					</h:outputText>
 				</p:column>
 
 				<p:column headerText="Fabricante" sortBy="#{produto.fabricante.descricao}"
@@ -53,7 +55,7 @@
 					</p:commandButton>
 					
 					<p:commandButton icon="ui-icon-pencil"
-						actionListener="#{cidadeBean.editar}"
+						actionListener="#{produtoBean.editar}"
 						update=":mensagem :formCadastro:painel"
 						oncomplete="PF('dialogo').show();">
 						<f:attribute name="produtoSelecionado" value="#{produto}"/>
@@ -76,28 +78,38 @@
 				<p:outputLabel for="descricao" value="Descrição: " />
 				<p:inputText id="descricao" size="30" maxlength="50"
 					value="#{produtoBean.produto.descricao}" required="true" 
-					requiredMessage="O campo 'descrição' é obrigatório"/>
+					requiredMessage="O campo 'Descrição' é obrigatório"/>
 					
-				<p:outputLabel for="quantidade" value="Quantidade: " />
-				<p:inputText id="quantidade" size="10" maxlength="5" 
+				<p:outputLabel  value="Quantidade: " />
+				<p:inputText  size="10" maxlength="5" 
 					value="#{produtoBean.produto.quantidade}" required="true"
-					requiredMessage="O campo 'quantidade' é obrigatório"/>
-
-				<p:outputLabel for="preco" value="Preço" />
-				<p:inputText id="preco" maxlength="7" size="10" 
+					requiredMessage="O campo 'Quantidade' é obrigatório"
+					converterMessage="Insira um valor valido para o campo 'Quantidade'"
+					validatorMessage="Insira um valor entre 0 e 1000 para o campo 'Quantidade'">
+					<f:validateLongRange minimum="0" maximum="1000"/>
+				</p:inputText>
+				
+				<p:outputLabel  value="Preço" />
+				<p:inputText  maxlength="7" size="10" 
 					value="#{produtoBean.produto.preco}" required="true"
-					requiredMessage="O campo 'preço' é obrigatório"/>
+					requiredMessage="O campo 'Preço' é obrigatório"
+					converterMessage="Insira um valor valido para o campo 'Preço'"
+					validatorMessage="Insira um valor entre '0.0'1 e '9999.99'">
+					<f:validateDoubleRange minimum="0.01" maximum="9999.99"/>
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"/>
+				</p:inputText>
 					
 				<p:outputLabel for="fabricante" value="Fabricante"/>
 					<p:selectOneMenu id="fabricante" filter="true"
 						value="#{produtoBean.produto.fabricante}"
 						converter="omnifaces.SelectItemsConverter" required="true"
-						requiredMessage="O campo 'fabricante' é obrigatorio">
+						requiredMessage="O campo 'Fabricante' é obrigatorio">
 						<f:selectItem noSelectionOption="true" 
 							itemLabel="Selecione um fabricante" />
 						<f:selectItems value="#{produtoBean.fabricantes}" var="fabricante"
 							itemValue="#{fabricante}" itemLabel="#{fabricante.descricao}"  />
 					</p:selectOneMenu>
+					
 			</h:panelGrid>
 			<h:panelGrid columns="2">
 				<p:commandButton value="Salvar" 
