@@ -11,6 +11,7 @@ import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
 
+import br.caio.drogaria.dao.CidadeDAO;
 import br.caio.drogaria.dao.EstadoDAO;
 import br.caio.drogaria.dao.PessoaDAO;
 import br.caio.drogaria.domain.Cidade;
@@ -24,10 +25,11 @@ public class PessoaBean implements Serializable {
 
 	private Pessoa pessoa;
 	private List<Pessoa> pessoas;
-	
+	private Estado estado;
+
 	private List<Estado> estados;
 	private List<Cidade> cidades;
-	
+
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -42,6 +44,14 @@ public class PessoaBean implements Serializable {
 
 	public void setPessoas(List<Pessoa> pessoas) {
 		this.pessoas = pessoas;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	public List<Estado> getEstados() {
@@ -74,23 +84,38 @@ public class PessoaBean implements Serializable {
 	public void novo() {
 		try {
 			pessoa = new Pessoa();
-		
+
 			EstadoDAO estadoDAO = new EstadoDAO();
 			estados = estadoDAO.listar();
-		
+
 			cidades = new ArrayList<Cidade>();
 		} catch (RuntimeException erro) {
 			Messages.addGlobalError("Ocorreu um erro ao tentar gerar uma pessoa");
 			erro.printStackTrace();
 		}
 	}
-	
-	public void salvar(){
+
+	public void salvar() {
 	}
-	
-	public void excluir(ActionEvent evento){
+
+	public void excluir(ActionEvent evento) {
 	}
-	
-	public void editar(ActionEvent evento){
+
+	public void editar(ActionEvent evento) {
+	}
+
+	public void popular() {
+		try {
+
+			if (estado != null) {
+				CidadeDAO cidadeDAO = new CidadeDAO();
+				cidades = cidadeDAO.buscarPorEstado(estado.getCodigo());
+			} else {
+				cidades = new ArrayList<>();
+			}
+		} catch (RuntimeException erro) {
+			Messages.addGlobalError("Ocorreu um erro ao tentar filtrar as cidades");
+			erro.printStackTrace();
+		}
 	}
 }

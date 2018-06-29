@@ -3,11 +3,12 @@ package br.caio.drogaria.dao;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import br.caio.drograria.util.HibernateUtil;
 
@@ -39,39 +40,60 @@ public class GenericDAO<Entidade> {
 		}
 	}
 	
-	public List<Entidade> listar(){
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		try {
-			/*Criteria consulta = sessao.createCriteria(classe);
-			List<Entidade> resultado = consulta.list();
-			return resultado;*/
-			
-			CriteriaBuilder builder = sessao.getCriteriaBuilder();
-			CriteriaQuery<Entidade>consulta = builder.createQuery(classe);
-			consulta.from(classe);
-			List<Entidade> resultado = sessao.createQuery(consulta).getResultList(); 
-			
-			//pedaço do codigo acima no comentário do video 153 - EstadoDAO - Listar (warning no codigo do professor comentado)
+@SuppressWarnings("unchecked")
+public List<Entidade> listar(){
+		
+		Session sessao= HibernateUtil.getFabricaDeSessoes().openSession();
+		try{
+			Criteria consulta=sessao.createCriteria(classe);
+			List<Entidade> resultado=consulta.list();
 			return resultado;
-		} catch (RuntimeException erro) {
+
+		}catch(RuntimeException erro){
 			throw erro;
-		} finally {
+		}finally {
+			sessao.close();
+		}
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Entidade> listar(String campoOrdenacao){
+		
+		Session sessao= HibernateUtil.getFabricaDeSessoes().openSession();
+		try{
+			Criteria consulta=sessao.createCriteria(classe);
+			consulta.addOrder(Order.asc(campoOrdenacao));
+			List<Entidade> resultado=consulta.list();
+			return resultado;
+
+		}catch(RuntimeException erro){
+			throw erro;
+		}finally {
+			sessao.close();
+		}
+		
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Entidade buscar(Long codigo){
+		
+		Session sessao= HibernateUtil.getFabricaDeSessoes().openSession();
+		try{
+			Criteria consulta=sessao.createCriteria(classe);
+			consulta.add(Restrictions.idEq(codigo));
+			
+			Entidade resultado=(Entidade)consulta.uniqueResult();
+			return resultado;
+
+		}catch(RuntimeException erro){
+			throw erro;
+		}finally {
 			sessao.close();
 		}
 	}
 	
-	public Entidade buscar(Long codigo){
-		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-		Entidade resultado = null;
-		try {
-			resultado = sessao.find(classe, codigo);
-			return resultado;
-		} catch (RuntimeException erro) {
-			throw erro;
-		} finally {
-			sessao.close();
-		}
-	}
 	
 	public void excluir(Entidade entidade) { 
 		Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();

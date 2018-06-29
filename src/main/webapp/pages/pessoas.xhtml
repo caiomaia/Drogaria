@@ -85,19 +85,21 @@
 				<p:outputLabel for="estado" value="Estado:" />
 				<p:selectOneMenu id="estado" filter="true"
 					converter="omnifaces.SelectItemsConverter"
-					requiredMessage="O campo 'Estado' é obrigatório">
+					value="#{pessoaBean.estado}">
 					<f:selectItem noSelectionOption="true"
 						itemLabel="Selecione um estado"/>
 					<f:selectItems value="#{pessoaBean.estados}" var="estado" itemValue="#{estado}" itemLabel="#{estado.nome}"/>
+					<p:ajax listener="#{pessoaBean.popular}" update=":formCadastro:cidade"/>
 				</p:selectOneMenu>
 				
 				<p:outputLabel for="cidade" value="Cidade:" />
 				<p:selectOneMenu id="cidade" filter="true"
 					converter="omnifaces.SelectItemsConverter" required="true"
-					requiredMessage="O campo 'Cidade' é obrigatório">
+					requiredMessage="O campo 'Cidade' é obrigatório"
+					value="#{pessoaBean.pessoa.cidade}">
 					<f:selectItem noSelectionOption="true"
 						itemLabel="Selecione uma cidade"/>
-					<f:selectItems value="#{pessoaBean.cidades}" var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}]"/>
+					<f:selectItems value="#{pessoaBean.cidades}" var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}"/>
 				</p:selectOneMenu>
 				
 				<p:outputLabel for="rua" value="Rua:" />
@@ -105,8 +107,8 @@
 					value="#{pessoaBean.pessoa.rua}" required="true"
 					requiredMessage="O campo 'Rua' é obrigatório" />
 
-				<p:outputLabel value="Número" />
-				<p:inputText maxlength="5" size="10"
+				<p:outputLabel value="Número" for="numero" />
+				<p:inputText id="numero" maxlength="5" size="10"
 					value="#{pessoaBean.pessoa.numero}" required="true"
 					requiredMessage="O campo 'Número' é obrigatório"
 					converterMessage="Informe um valor válido para o campo 'Número'"

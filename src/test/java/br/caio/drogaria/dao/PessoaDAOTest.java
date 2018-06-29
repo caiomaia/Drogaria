@@ -99,7 +99,7 @@ public class PessoaDAOTest {
 	@Test
 	@Ignore
 	public void excluir(){
-		Long codigo = 24L;
+		Long codigo = 25L;
 		PessoaDAO pessoaDAO = new PessoaDAO();
 		Pessoa pessoa = pessoaDAO.buscar(codigo);
 		pessoaDAO.excluir(pessoa);
